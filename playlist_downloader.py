@@ -6,7 +6,7 @@ from pytube import Playlist
 def downloader(links):
 
     for link in links:
-        owd = os.getcwd()
+        original_working_directory = os.getcwd()
         playlist = Playlist(link)
         os.mkdir(playlist.title)
         os.chdir(playlist.title)
@@ -18,18 +18,18 @@ def downloader(links):
             os.rename(out_file, new_file)
 
             try:
-                meta = mutagen.easyid3.EasyID3(new_file)
+                metadata = mutagen.easyid3.EasyID3(new_file)
             except:
-                meta = mutagen.File(new_file, easy=True)
-                meta.add_tags()
+                metadata = mutagen.File(new_file, easy=True)
+                metadata.add_tags()
 
-            meta["title"] = video.title
-            meta["artist"] = video.author[:-8]
+            metadata["title"] = video.title
+            metadata["artist"] = video.author[:-8]
 
-            meta.save(new_file)
+            metadata.save(new_file)
             print(new_file + " saved.")
 
-        os.chdir(owd)
+        os.chdir(original_working_directory)
 
 if __name__=="__main__":
     links = []
